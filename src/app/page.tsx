@@ -10,8 +10,6 @@ import { CCIParameter, CCIResult } from './types';
 import { calculateCCIIndex } from './utils/cciCalculator';
 import { exportToPDF } from './utils/exportUtils';
 import DataCollectionForm from '../components/DataCollectionForm';
-import AnnexureKReport from '../components/AnnexureKReport';
-import { exportAnnexureKToPDF } from './utils/exportUtils';
 
 export default function Home() {
   const [parameters, setParameters] = useState<CCIParameter[]>(initialCCIParameters);
@@ -23,14 +21,6 @@ export default function Home() {
   const [assessmentDate, setAssessmentDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
-  const [showAnnexureK, setShowAnnexureK] = useState(false);
-  const [entityType, setEntityType] = useState('');
-  const [entityCategory, setEntityCategory] = useState('');
-  const [rationale, setRationale] = useState('');
-  const [period, setPeriod] = useState('');
-  const [auditingOrganization, setAuditingOrganization] = useState('');
-  const [signatoryName, setSignatoryName] = useState('');
-  const [designation, setDesignation] = useState('');
 
   const handleParameterChange = (paramId: number, field: keyof CCIParameter, value: number | string) => {
     setParameters(prevParams => 
@@ -168,56 +158,6 @@ export default function Home() {
     return categories[category] || category;
   };
 
-  const handleViewAnnexureK = () => {
-    setShowAnnexureK(true);
-    setShowResults(false);
-    setShowReport(false);
-    setShowDataCollection(false);
-    // Smooth scroll to annexure K
-    setTimeout(() => {
-      const annexureElement = document.getElementById('annexure-k');
-      if (annexureElement) {
-        annexureElement.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
-  };
-  
-  const handleExportAnnexureK = () => {
-    // Show loading indicator while PDF is being generated
-    const exportBtn = document.getElementById('export-annexure-k-btn');
-    if (exportBtn) {
-      exportBtn.textContent = 'Generating Annexure-K...';
-      exportBtn.classList.add('opacity-70');
-      exportBtn.setAttribute('disabled', 'true');
-    }
-
-    // Use setTimeout to allow the UI to update before starting the PDF generation
-    setTimeout(() => {
-      // Export the Annexure-K report
-      exportAnnexureKToPDF(
-        parameters, 
-        cciResult,
-        entityType,
-        entityCategory,
-        rationale,
-        period,
-        auditingOrganization,
-        signatoryName,
-        designation
-      );
-      
-      // Restore button state
-      if (exportBtn) {
-        exportBtn.textContent = 'Export Annexure-K as PDF';
-        exportBtn.classList.remove('opacity-70');
-        exportBtn.removeAttribute('disabled');
-      }
-      
-      // Notify user
-      alert('Annexure-K has been exported as PDF.');
-    }, 100);
-  };
-
   return (
     <div className="max-w-6xl mx-auto pb-20">
       <div className="p-8 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-b-xl shadow-lg mb-8">
@@ -291,17 +231,6 @@ export default function Home() {
             </svg>
             Calculate CCI
           </button>
-          {showResults && (
-            <button
-              onClick={handleViewAnnexureK}
-              className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-              </svg>
-              View Annexure-K Report
-            </button>
-          )}
         </div>
       </div>
 
@@ -384,146 +313,6 @@ export default function Home() {
             </div>
           </div>
           <CCIReport parameters={parameters} result={cciResult} />
-        </div>
-      )}
-
-      {showAnnexureK && (
-        <div id="annexure-k" className="mt-8">
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">Annexure-K Additional Information</h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Please fill in the additional information required for Annexure-K:
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label htmlFor="entity-type" className="block text-sm font-medium text-gray-700 mb-1">Entity Type</label>
-                <input
-                  type="text"
-                  id="entity-type"
-                  value={entityType}
-                  onChange={(e) => setEntityType(e.target.value)}
-                  placeholder="e.g., Intermediary Type"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="entity-category" className="block text-sm font-medium text-gray-700 mb-1">Entity Category</label>
-                <input
-                  type="text"
-                  id="entity-category"
-                  value={entityCategory}
-                  onChange={(e) => setEntityCategory(e.target.value)}
-                  placeholder="Category of the RE as per CSCRF"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="rationale" className="block text-sm font-medium text-gray-700 mb-1">Rationale for the Category</label>
-                <input
-                  type="text"
-                  id="rationale"
-                  value={rationale}
-                  onChange={(e) => setRationale(e.target.value)}
-                  placeholder="Rationale for categorization"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="period" className="block text-sm font-medium text-gray-700 mb-1">Period</label>
-                <input
-                  type="text"
-                  id="period"
-                  value={period}
-                  onChange={(e) => setPeriod(e.target.value)}
-                  placeholder="e.g., Jan 2023 - Jun 2023"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="auditing-org" className="block text-sm font-medium text-gray-700 mb-1">Auditing Organization (for MIIs)</label>
-                <input
-                  type="text"
-                  id="auditing-org"
-                  value={auditingOrganization}
-                  onChange={(e) => setAuditingOrganization(e.target.value)}
-                  placeholder="Name of auditing organization"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="signatory-name" className="block text-sm font-medium text-gray-700 mb-1">Name of Signatory</label>
-                <input
-                  type="text"
-                  id="signatory-name"
-                  value={signatoryName}
-                  onChange={(e) => setSignatoryName(e.target.value)}
-                  placeholder="Name of authorized signatory"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="designation" className="block text-sm font-medium text-gray-700 mb-1">Designation</label>
-                <select
-                  id="designation"
-                  value={designation}
-                  onChange={(e) => setDesignation(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select Designation</option>
-                  <option value="MD">MD</option>
-                  <option value="CEO">CEO</option>
-                  <option value="Board member">Board member</option>
-                  <option value="Partners">Partners</option>
-                  <option value="Proprietor">Proprietor</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="flex justify-center">
-              <button
-                id="export-annexure-k-btn"
-                onClick={handleExportAnnexureK}
-                className="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center mx-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-                Export Annexure-K as PDF
-              </button>
-              
-              <button
-                onClick={() => {
-                  setShowAnnexureK(false);
-                  setShowResults(true);
-                }}
-                className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center mx-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-                </svg>
-                Back to Results
-              </button>
-            </div>
-          </div>
-          
-          <AnnexureKReport 
-            result={cciResult}
-            parameters={parameters}
-            entityType={entityType}
-            entityCategory={entityCategory}
-            rationale={rationale}
-            period={period}
-            auditingOrganization={auditingOrganization}
-            signatoryName={signatoryName}
-            designation={designation}
-          />
         </div>
       )}
     </div>
