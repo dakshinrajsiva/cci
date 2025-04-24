@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import ParameterInput from '../components/ParameterInput';
 import CCIResults from '../components/CCIResults';
 import CCIReport from '../components/CCIReport';
+import AnnexureKForm from '../components/AnnexureKForm';
 import { initialCCIParameters, generateSampleData } from './data/cciParameters';
 import { CCIParameter, CCIResult } from './types';
 import { calculateCCIIndex } from './utils/cciCalculator';
@@ -16,6 +17,7 @@ export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showDataCollection, setShowDataCollection] = useState(false);
+  const [showAnnexureK, setShowAnnexureK] = useState(false);
   const [organizationName, setOrganizationName] = useState('Your Organization');
   const [expandedParameter, setExpandedParameter] = useState<number | null>(null);
   const [assessmentDate, setAssessmentDate] = useState<string>(
@@ -56,6 +58,7 @@ export default function Home() {
     setShowResults(false);
     setShowReport(false);
     setShowDataCollection(false);
+    setShowAnnexureK(false);
     setExpandedParameter(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -121,9 +124,24 @@ export default function Home() {
     setShowDataCollection(true);
     setShowResults(false);
     setShowReport(false);
+    setShowAnnexureK(false);
     // Smooth scroll to data collection form
     setTimeout(() => {
       const formElement = document.getElementById('data-collection');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleShowAnnexureK = () => {
+    setShowAnnexureK(true);
+    setShowResults(false);
+    setShowReport(false);
+    setShowDataCollection(false);
+    // Smooth scroll to Annexure K form
+    setTimeout(() => {
+      const formElement = document.getElementById('annexure-k-form');
       if (formElement) {
         formElement.scrollIntoView({ behavior: 'smooth' });
       }
@@ -134,6 +152,11 @@ export default function Home() {
     setParameters(updatedParameters);
     setShowDataCollection(false);
     handleCalculate();
+  };
+
+  const handleAnnexureKComplete = () => {
+    setShowAnnexureK(false);
+    handleViewReport();
   };
 
   // Group parameters by category for better organization
@@ -240,6 +263,15 @@ export default function Home() {
             </svg>
             Calculate CCI
           </button>
+          <button
+            onClick={handleShowAnnexureK}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+            </svg>
+            Annexure-K Form
+          </button>
         </div>
       </div>
 
@@ -293,13 +325,24 @@ export default function Home() {
         </div>
       )}
 
+      {showAnnexureK && (
+        <div id="annexure-k-form" className="mb-8 animate-fadeIn">
+          <AnnexureKForm 
+            result={cciResult}
+            parameters={parameters} 
+            onComplete={handleAnnexureKComplete}
+            onCancel={() => setShowAnnexureK(false)}
+          />
+        </div>
+      )}
+
       {showResults && (
         <div id="results" className="bg-white rounded-xl shadow-md overflow-hidden mb-8 animate-fadeIn">
           <div className="p-6 bg-gray-50 border-b">
             <h2 className="text-xl font-semibold text-blue-800">CCI Results</h2>
           </div>
           <div className="p-6">
-            <CCIResults result={cciResult} onViewReport={handleViewReport} onReset={handleReset} />
+            <CCIResults result={cciResult} onViewReport={handleViewReport} onReset={handleReset} onShowAnnexureK={handleShowAnnexureK} />
           </div>
         </div>
       )}

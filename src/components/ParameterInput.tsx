@@ -104,7 +104,7 @@ const ParameterInput: React.FC<ParameterInputProps> = ({ parameter, onChange, ex
                 Target
               </label>
               <div className="p-3 bg-gray-50 rounded-md text-sm text-gray-700">
-                {parameter.target * 100}% (Weightage: {parameter.weightage}%)
+                {parameter.target}% (Weightage: {parameter.weightage}%)
               </div>
             </div>
           </div>
