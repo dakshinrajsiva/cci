@@ -160,36 +160,36 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto pb-20">
-      <div className="p-8 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-b-xl shadow-lg mb-8">
+      <div className="p-8 bg-black text-white rounded-b-xl shadow-lg mb-8">
         <h1 className="text-3xl font-bold text-center">
           Cyber Capability Index Calculator
         </h1>
-        <p className="mt-4 text-center text-blue-100">
+        <p className="mt-4 text-center text-gray-300">
           SEBI CSCRF Compliance Assessment Tool<br />
-          <span className="bg-yellow-500 text-blue-900 px-2 py-1 mt-2 inline-block rounded-md font-medium">
+          <span className="bg-white text-black px-2 py-1 mt-2 inline-block rounded-md font-medium">
             Deadline: June 30, 2025
           </span>
         </p>
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="organization" className="block text-sm font-medium text-blue-100">Organization Name</label>
+            <label htmlFor="organization" className="block text-sm font-medium text-gray-300">Organization Name</label>
             <input 
               type="text" 
               id="organization" 
               value={organizationName} 
               onChange={(e) => setOrganizationName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring-blue-300 text-gray-900 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-gray-900 sm:text-sm"
             />
           </div>
           <div>
-            <label htmlFor="assessmentDate" className="block text-sm font-medium text-blue-100">Assessment Date</label>
+            <label htmlFor="assessmentDate" className="block text-sm font-medium text-gray-300">Assessment Date</label>
             <input 
               type="date" 
               id="assessmentDate" 
               value={assessmentDate} 
               onChange={(e) => setAssessmentDate(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring-blue-300 text-gray-900 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-gray-900 sm:text-sm"
             />
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function Home() {
         <div className="flex flex-wrap justify-center gap-4 mt-8">
           <button
             onClick={handleLoadSample}
-            className="bg-blue-900 hover:bg-blue-950 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -206,7 +206,7 @@ export default function Home() {
           </button>
           <button
             onClick={handleShowDataCollection}
-            className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            className="bg-gray-700 hover:bg-gray-800 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
@@ -215,7 +215,7 @@ export default function Home() {
           </button>
           <button
             onClick={handleReset}
-            className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
@@ -224,7 +224,7 @@ export default function Home() {
           </button>
           <button
             onClick={handleCalculate}
-            className="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            className="bg-black hover:bg-gray-900 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center border border-white"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -236,11 +236,11 @@ export default function Home() {
 
       {!showDataCollection && !showResults && !showReport && (
         <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-          <div className="p-6 bg-gray-50 border-b flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-blue-800">CCI Parameters</h2>
+          <div className="p-6 bg-black border-b flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-white">CCI Parameters</h2>
             <button 
               onClick={expandAll}
-              className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
+              className="text-white hover:text-gray-300 font-medium flex items-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -252,7 +252,7 @@ export default function Home() {
           <div className="p-6">
             {Object.keys(groupedParameters).map((category, categoryIndex) => (
               <div key={categoryIndex} className="mb-8">
-                <h3 className="text-lg font-medium text-blue-800 mb-4 pb-2 border-b">
+                <h3 className="text-lg font-medium text-white mb-4 pb-2 border-b">
                   {getCategoryName(category)} Parameters
                 </h3>
                 

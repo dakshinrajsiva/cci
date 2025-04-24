@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 30, 41, 59;
-  --background-rgb: 248, 250, 252;
-  --primary-rgb: 37, 99, 235;
-  --secondary-rgb: 79, 70, 229;
-  --success-rgb: 16, 185, 129;
-  --warning-rgb: 245, 158, 11;
-  --danger-rgb: 239, 68, 68;
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+  --primary-rgb: 0, 0, 0;
+  --secondary-rgb: 50, 50, 50;
+  --success-rgb: 0, 0, 0;
+  --warning-rgb: 0, 0, 0;
+  --danger-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -148,15 +148,15 @@ body {
 
 /* Custom components */
 .cci-card {
-  @apply bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all duration-200;
+  @apply bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 transition-all duration-200;
 }
 
 .cci-card:hover {
-  @apply shadow-lg border-blue-100;
+  @apply shadow-lg border-gray-300;
 }
 
 .cci-heading {
-  @apply text-xl font-semibold text-blue-800;
+  @apply text-xl font-semibold text-black;
 }
 
 .cci-subheading {
@@ -164,7 +164,7 @@ body {
 }
 
 .cci-btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
+  @apply bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
 }
 
 .cci-btn-secondary {
@@ -172,9 +172,9 @@ body {
 }
 
 .cci-btn-success {
-  @apply bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
+  @apply bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
 }
 
 .cci-btn-danger {
-  @apply bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
+  @apply bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md transition duration-200 shadow-md;
 } 
