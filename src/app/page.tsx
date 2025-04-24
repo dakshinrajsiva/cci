@@ -171,6 +171,15 @@ export default function Home() {
           </span>
         </p>
 
+        <div className="mt-4 flex justify-center">
+          <a 
+            href="/sebi-cscrf" 
+            className="text-white hover:text-gray-200 underline transition-colors"
+          >
+            View SEBI CSCRF Implementation Guide
+          </a>
+        </div>
+
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="organization" className="block text-sm font-medium text-gray-300">Organization Name</label>
@@ -290,7 +299,7 @@ export default function Home() {
             <h2 className="text-xl font-semibold text-blue-800">CCI Results</h2>
           </div>
           <div className="p-6">
-            <CCIResults result={cciResult} onViewReport={handleViewReport} />
+            <CCIResults result={cciResult} onViewReport={handleViewReport} onReset={handleReset} />
           </div>
         </div>
       )}

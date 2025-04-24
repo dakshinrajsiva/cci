@@ -8,6 +8,20 @@ The SEBI CSCRF framework, established under [SEBI Circular SEBI/HO/MIRSD/CIR/P/2
 
 The framework aims to enhance the cyber resilience of India's financial ecosystem by establishing minimum baseline security requirements while promoting a risk-based approach to cybersecurity.
 
+## Cyber Capability Index (CCI) for Qualified REs and MIIs
+
+The Cyber Capability Index (CCI) is a quantitative methodology for assessing cybersecurity maturity specifically designed for Qualified Regulated Entities (REs) and Market Infrastructure Institutions (MIIs) under SEBI's regulatory purview. The CCI framework translates SEBI CSCRF requirements into 23 measurable parameters with specific weightages to provide a standardized assessment approach.
+
+### Key Features for Regulated Entities
+
+- **Regulatory Compliance**: Direct alignment with SEBI CSCRF mandates for Qualified REs and MIIs
+- **Quantifiable Measurements**: Numerical scoring system (0-100) to determine cybersecurity maturity levels
+- **Risk-Based Assessment**: Weighted parameters prioritizing critical security controls
+- **Maturity Benchmarking**: Industry-specific maturity classification for financial market participants
+- **Continuous Improvement**: Trackable metrics to demonstrate security posture enhancement
+
+Under SEBI directives, all Qualified REs must maintain a minimum CCI maturity level of "Developing" (score of 61 or higher), while critical MIIs are expected to achieve "Manageable" (score of 71 or higher) to ensure adequate protection of market infrastructure.
+
 ## Implementation Timeline
 
 | Milestone | Deadline | Requirements |
