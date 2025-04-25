@@ -201,9 +201,14 @@ export default function Home() {
 
         <div className="mt-4 flex justify-center">
           <a 
-            href="/sebi-cscrf" 
-            className="text-white hover:text-gray-200 underline transition-colors"
+            href="https://dakshinrajsiva.github.io/cci/sebi-cscrf" 
+            className="bg-white text-black hover:bg-gray-200 py-2 px-6 rounded-md transition duration-200 font-bold flex items-center shadow-md"
+            target="_blank"
+            rel="noopener noreferrer"
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+            </svg>
             View SEBI CSCRF Implementation Guide
           </a>
         </div>
@@ -248,8 +253,19 @@ export default function Home() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
             </svg>
-            Detailed Data Collection
+            Detailed Assessment
           </button>
+          <a 
+            href="https://dakshinrajsiva.github.io/cci/sebi-cscrf" 
+            className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+            </svg>
+            Implementation Guide
+          </a>
           <button
             onClick={handleReset}
             className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
@@ -382,6 +398,27 @@ export default function Home() {
           <CCIReport parameters={parameters} result={cciResult} />
         </div>
       )}
+
+      {/* Bottom Call-to-Action for Implementation Guide */}
+      <div className="bg-blue-900 text-white p-6 rounded-xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between">
+        <div className="mb-4 md:mb-0">
+          <h2 className="text-xl font-bold">Need guidance for SEBI CSCRF implementation?</h2>
+          <p className="text-blue-200 mt-2">
+            Our comprehensive guide provides detailed requirements and evidence examples for each parameter
+          </p>
+        </div>
+        <a 
+          href="https://dakshinrajsiva.github.io/cci/sebi-cscrf" 
+          className="bg-white text-blue-900 hover:bg-blue-100 py-3 px-8 rounded-md transition duration-200 font-bold flex items-center shadow-md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+          </svg>
+          View Implementation Guide
+        </a>
+      </div>
     </div>
   );
 } 
