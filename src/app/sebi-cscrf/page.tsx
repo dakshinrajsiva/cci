@@ -1,10 +1,16 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import SEBICSCRFIntroduction from '../../components/SEBICSCRFIntroduction';
 import ImplementationEvidenceGuide from '../../components/ImplementationEvidenceGuide';
 
 export default function SEBICSCRFPage() {
+  // For debugging during deployment
+  useEffect(() => {
+    console.log('SEBICSCRFPage mounted');
+    console.log('ImplementationEvidenceGuide component available:', !!ImplementationEvidenceGuide);
+  }, []);
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Add CSS for shiny animation */}
@@ -76,6 +82,8 @@ export default function SEBICSCRFPage() {
       
       {/* Implementation Evidence Guide */}
       <div className="mt-12 mb-12 border-t border-gray-200 pt-10">
+        <h2 className="text-2xl font-bold mb-4">Implementation Evidence Guide</h2>
+        <p className="mb-4">The Implementation Evidence Guide provides detailed information about the documentation required for each parameter in the SEBI CSCRF framework.</p>
         <ImplementationEvidenceGuide />
       </div>
       
