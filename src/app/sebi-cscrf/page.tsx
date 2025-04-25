@@ -2,6 +2,7 @@
 
 import React from 'react';
 import SEBICSCRFIntroduction from '../../components/SEBICSCRFIntroduction';
+import ImplementationEvidenceGuide from '../../components/ImplementationEvidenceGuide';
 
 export default function SEBICSCRFPage() {
   return (
@@ -72,6 +73,11 @@ export default function SEBICSCRFPage() {
       </div>
       
       <SEBICSCRFIntroduction />
+      
+      {/* Implementation Evidence Guide */}
+      <div className="mt-12 mb-12 border-t border-gray-200 pt-10">
+        <ImplementationEvidenceGuide />
+      </div>
       
       {/* Mid-page CTA - Card */}
       <div className="bg-gray-900 text-white p-5 rounded-lg border-l-4 border-white flex flex-col md:flex-row justify-between items-center my-10 gap-4">

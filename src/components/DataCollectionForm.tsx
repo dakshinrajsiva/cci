@@ -743,16 +743,6 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
           <div className="flex space-x-3">
             <button
               type="button"
-              onClick={startWalkthrough}
-              className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-200 flex items-center shadow-lg"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-              Start Tour
-            </button>
-            <button
-              type="button"
               onClick={handleExportPDF}
               disabled={isExporting}
               ref={exportButtonRef}
@@ -765,21 +755,6 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
             </button>
           </div>
         </div>
-      </div>
-      
-      {/* Fixed walkthrough button that's always visible */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          type="button"
-          onClick={startWalkthrough}
-          className="bg-green-600 hover:bg-green-700 text-white py-3 px-5 rounded-full shadow-xl transition duration-200 flex items-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-            <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-          </svg>
-          Take a Tour
-        </button>
       </div>
       
       <form onSubmit={handleSubmit} className="p-6">
@@ -994,6 +969,196 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
               
                 <div ref={evidenceSectionRef} className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Implementation Evidence</label>
+                <div className="mb-2 bg-blue-50 border border-blue-200 rounded-md p-3 text-xs text-blue-700">
+                  <p className="font-medium mb-1">Suggested Evidence:</p>
+                  {param.id === 1 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Vulnerability scan reports from the last assessment period</li>
+                      <li>Remediation tracking documentation showing timeline of fixes</li>
+                      <li>Change management records for vulnerability patches</li>
+                      <li>Screenshots of vulnerability management dashboard</li>
+                    </ul>
+                  )}
+                  {param.id === 2 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Training completion certificates for security personnel</li>
+                      <li>Training attendance logs with dates and content covered</li>
+                      <li>Skills assessment results for role-specific security training</li>
+                      <li>Training program documentation showing role-specific modules</li>
+                    </ul>
+                  )}
+                  {param.id === 3 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Annual budget allocation documents showing security budget</li>
+                      <li>Financial reports showing actual security expenditures</li>
+                      <li>Budget comparison documents showing IT vs security allocations</li>
+                      <li>Purchase orders for security tools, services, and personnel</li>
+                    </ul>
+                  )}
+                  {param.id === 4 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Risk assessment reports with dates and system coverage</li>
+                      <li>System inventory documentation</li>
+                      <li>Risk assessment methodology documentation</li>
+                      <li>Screenshots of risk register or GRC tool</li>
+                    </ul>
+                  )}
+                  {param.id === 5 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>SIEM architecture diagrams showing connected systems</li>
+                      <li>Log collection/forwarding configuration files</li>
+                      <li>Documentation of critical systems inventory</li>
+                      <li>Screenshots of SIEM dashboard showing system coverage</li>
+                    </ul>
+                  )}
+                  {param.id === 6 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Change management records showing approved configuration changes</li>
+                      <li>Screenshots of configuration management database</li>
+                      <li>Baseline configuration documentation</li>
+                      <li>Audit logs showing configuration drift detection</li>
+                    </ul>
+                  )}
+                  {param.id === 7 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Contingency plan test records and after-action reports</li>
+                      <li>BCP/DR exercise documentation</li>
+                      <li>Test schedule showing systems covered</li>
+                      <li>Screenshots of test execution or exercise logs</li>
+                    </ul>
+                  )}
+                  {param.id === 8 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Privileged access management system inventory reports</li>
+                      <li>PIM solution architecture diagrams</li>
+                      <li>Privileged account inventory documentation</li>
+                      <li>Screenshots of privileged session recordings</li>
+                    </ul>
+                  )}
+                  {param.id === 9 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Incident response logs with timestamps</li>
+                      <li>Security incident reports with reporting timeline</li>
+                      <li>Screenshots from incident management system</li>
+                      <li>Incident classification documentation</li>
+                    </ul>
+                  )}
+                  {param.id === 10 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Anti-malware deployment inventory reports</li>
+                      <li>Configuration settings for malware protection tools</li>
+                      <li>System coverage reports for anti-malware solutions</li>
+                      <li>Screenshots of management console showing coverage</li>
+                    </ul>
+                  )}
+                  {param.id === 11 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>MFA configuration documentation for remote access systems</li>
+                      <li>VPN session logs showing authentication methods</li>
+                      <li>Remote access policy documentation</li>
+                      <li>Screenshots of MFA enrollment status for users</li>
+                    </ul>
+                  )}
+                  {param.id === 12 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Physical security incident reports</li>
+                      <li>Access control logs for physical entry points</li>
+                      <li>Badge system reports for unauthorized access attempts</li>
+                      <li>CCTV footage or records of physical security events</li>
+                    </ul>
+                  )}
+                  {param.id === 13 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Signed confidentiality agreements</li>
+                      <li>System access request forms showing agreement requirements</li>
+                      <li>User onboarding process documentation</li>
+                      <li>HR records of agreement completion</li>
+                    </ul>
+                  )}
+                  {param.id === 14 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Background check records for personnel</li>
+                      <li>Security clearance documentation</li>
+                      <li>Screening policy documentation</li>
+                      <li>Personnel security verification records</li>
+                    </ul>
+                  )}
+                  {param.id === 15 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Policy document inventory with approval signatures and dates</li>
+                      <li>Policy review schedule and completion records</li>
+                      <li>Documentation of policy approval workflow</li>
+                      <li>Screenshots of policy management system</li>
+                    </ul>
+                  )}
+                  {param.id === 16 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Contract language samples showing security requirements</li>
+                      <li>Vendor assessment documentation</li>
+                      <li>Procurement policy showing security requirement integration</li>
+                      <li>Third-party security agreement examples</li>
+                    </ul>
+                  )}
+                  {param.id === 17 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>User termination records with timestamps</li>
+                      <li>Account deactivation logs</li>
+                      <li>HR/IT coordination documentation for departures</li>
+                      <li>Screenshots of offboarding workflow system</li>
+                    </ul>
+                  )}
+                  {param.id === 18 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Continuous monitoring strategy documentation</li>
+                      <li>Automated control testing reports</li>
+                      <li>Dashboard screenshots showing control monitoring</li>
+                      <li>Continuous assessment workflow documentation</li>
+                    </ul>
+                  )}
+                  {param.id === 19 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Asset classification documentation</li>
+                      <li>Critical asset inventory reports</li>
+                      <li>Business impact analysis records</li>
+                      <li>System dependency mappings for critical assets</li>
+                    </ul>
+                  )}
+                  {param.id === 20 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>CSK event logs with resolution timestamps</li>
+                      <li>Event management system screenshots</li>
+                      <li>CSK report handling procedures</li>
+                      <li>SLA documentation for event resolution</li>
+                    </ul>
+                  )}
+                  {param.id === 21 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Password policy documentation</li>
+                      <li>System configuration screenshots showing password settings</li>
+                      <li>Compliance reports for password complexity</li>
+                      <li>Group policy objects or equivalent settings</li>
+                    </ul>
+                  )}
+                  {param.id === 22 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Cyber insurance policy documentation</li>
+                      <li>Coverage details showing limits and inclusions</li>
+                      <li>Insurance renewal documentation</li>
+                      <li>Cyber coverage assessment reports</li>
+                    </ul>
+                  )}
+                  {param.id === 23 && (
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Automated compliance monitoring tool configuration</li>
+                      <li>Documentation showing CSCRF mapping to automated controls</li>
+                      <li>Compliance dashboard screenshots</li>
+                      <li>Automated assessment reports for CSCRF standards</li>
+                    </ul>
+                  )}
+                  {param.id > 23 && (
+                    <p>Provide relevant documentation, screenshots, logs, or other evidence that demonstrates your compliance with this control requirement.</p>
+                  )}
+                </div>
                 <textarea
                   value={param.implementationEvidence || ''}
                   onChange={(e) => handleChange(param.id, 'implementationEvidence', e.target.value)}

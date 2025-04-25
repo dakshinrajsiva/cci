@@ -28,6 +28,18 @@ export interface CCIResult {
   organization: string; // Organization name
 }
 
+// Annexure K form data interface
+export interface AnnexureKData {
+  organization: string;
+  entityType: string;
+  entityCategory: string;
+  rationale: string;
+  period: string;
+  auditingOrganization: string;
+  signatoryName: string;
+  designation: string;
+}
+
 export const maturityLevels = [
   { min: 91, max: 100, level: 'Exceptional Cybersecurity Maturity' },
   { min: 81, max: 90, level: 'Optimal Cybersecurity Maturity' },

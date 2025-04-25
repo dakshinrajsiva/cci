@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
+  // Remove deprecated experimental.appDir as it's now default in Next.js 13+
+  experimental: {},
+  // Output as static files for GitHub Pages
+  output: 'export',
+  // Enable static image optimization
+  images: {
+    unoptimized: true,
   },
   // Ensure ESLint runs on specific file extensions during builds
   eslint: {
@@ -17,6 +22,11 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  // Set the base path to match your GitHub repo name if needed
+  // For example: basePath: '/cci',
+  basePath: '/cci',
+  // Set asset prefix to match your GitHub repo if needed
+  assetPrefix: '/cci',
 }
 
 module.exports = nextConfig

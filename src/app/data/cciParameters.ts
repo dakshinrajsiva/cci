@@ -418,3 +418,17 @@ export const generateSampleData = (): CCIParameter[] => {
     };
   });
 }; 
+
+// Sample data for Annexure K form
+export const generateAnnexureKSampleData = (organization: string) => {
+  return {
+    organization,
+    entityType: 'Stock Exchange',
+    entityCategory: 'Market Infrastructure Institution (MII)',
+    rationale: 'As a Stock Exchange, our entity plays a critical role in providing a marketplace for trading securities. This classification aligns with SEBI CSCRF guidelines for MIIs, which require the highest level of cybersecurity compliance due to the systemic importance and potential impact on financial markets.',
+    period: 'January 2023 - December 2023',
+    auditingOrganization: 'Deloitte Cyber Risk Services',
+    signatoryName: 'Rajesh Sharma',
+    designation: 'Chief Information Security Officer'
+  };
+}; 

@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
-import { CCIParameter, CCIResult } from '../types';
+import { CCIParameter, CCIResult, AnnexureKData } from '../types';
 import { calculateParameterScore, calculateWeightedScore } from './cciCalculator';
 
 // Add the missing type definition for jspdf-autotable
@@ -10,7 +10,7 @@ declare module 'jspdf' {
   }
 }
 
-export const generateSEBIReport = (parameters: CCIParameter[], result: CCIResult) => {
+export const generateSEBIReport = (parameters: CCIParameter[], result: CCIResult, annexureKData?: AnnexureKData) => {
   const doc = new jsPDF();
   
   // Keep track of pages and sections for table of contents
@@ -383,6 +383,90 @@ export const generateSEBIReport = (parameters: CCIParameter[], result: CCIResult
     });
   });
   
+  // Add Annexure K if available
+  if (annexureKData) {
+    doc.addPage();
+    const annexureKPage = doc.getNumberOfPages();
+    addToToc('Annexure K', annexureKPage);
+    
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 51, 153);
+    doc.text('Annexure-K Form', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('SEBI Reporting Format for MIIs and Qualified REs to Submit CCI Score', 105, 30, { align: 'center' });
+    
+    // Organization info table
+    doc.autoTable({
+      startY: 40,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 51, 153], textColor: 255 },
+      head: [['Field', 'Value']],
+      body: [
+        ['Name of the Organisation', annexureKData.organization],
+        ['Entity Type', annexureKData.entityType],
+        ['Entity Category (as per CSCRF)', annexureKData.entityCategory],
+        ['Period', annexureKData.period],
+        ['Name of the Auditing Organisation', annexureKData.auditingOrganization || 'Not Applicable']
+      ]
+    });
+    
+    // Rationale
+    let startY = 40;
+    // @ts-ignore - autoTable sets this property on the jsPDF instance
+    if (doc.previousAutoTable && doc.previousAutoTable.finalY) {
+      // @ts-ignore
+      startY = doc.previousAutoTable.finalY + 10;
+    }
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Rationale for the Category:', 14, startY);
+    
+    doc.setFont('helvetica', 'normal');
+    const rationaleLines = doc.splitTextToSize(annexureKData.rationale, 180);
+    doc.text(rationaleLines, 14, startY + 10);
+    
+    // Signatory section
+    const sigY = startY + 10 + (rationaleLines.length * 5) + 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Authorised Signatory Declaration:', 14, sigY);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.text('I/ We hereby confirm that Cyber Capability Index (CCI) has been verified by me/ us and I/ We shall take', 14, sigY + 10);
+    doc.text('the responsibility and ownership of the CCI report.', 14, sigY + 17);
+    
+    // Signatory table
+    doc.autoTable({
+      startY: sigY + 25,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 51, 153], textColor: 255 },
+      head: [['Field', 'Value']],
+      body: [
+        ['Name of the Signatory', annexureKData.signatoryName],
+        ['Designation', annexureKData.designation]
+      ]
+    });
+    
+    // Signature line
+    let sigTableY = sigY + 25;
+    // @ts-ignore - autoTable sets this property on the jsPDF instance
+    if (doc.previousAutoTable && doc.previousAutoTable.finalY) {
+      // @ts-ignore
+      sigTableY = doc.previousAutoTable.finalY + 10;
+    }
+    
+    doc.setDrawColor(0);
+    doc.line(14, sigTableY, 80, sigTableY);
+    doc.text('Signature', 14, sigTableY + 5);
+    
+    doc.setDrawColor(0);
+    doc.line(120, sigTableY, 180, sigTableY);
+    doc.text('Date', 120, sigTableY + 5);
+  }
+  
   // Attestation Page
   doc.addPage();
   const attestationPage = doc.getNumberOfPages();
@@ -469,45 +553,44 @@ export const generateSEBIReport = (parameters: CCIParameter[], result: CCIResult
 };
 
 /**
- * Exports the complete CCI assessment report to PDF
+ * Export CCI assessment as PDF
  * 
- * This export includes:
- * 1. Cover page with organization and score information
- * 2. Table of contents for easy navigation
- * 3. Executive summary with compliance status and category scores
- * 4. Implementation evidence summary section
- * 5. Detailed parameter assessments organized by framework category
- * 6. For each parameter:
- *    - Description and formula
- *    - Current values and scores
- *    - Implementation evidence required (highlighted)
- *    - Auditor comments (highlighted)
- *    - Additional context, best practices, and guidelines
- * 7. Final attestation page for signatures
- * 
- * The report is structured to highlight critical information and 
- * maintain consistent formatting throughout.
- * 
- * @param parameters The complete set of CCIParameters with values
- * @param result The calculated CCIResult with scores
+ * @param parameters The complete set of CCIParameters with values or a DOM element
+ * @param result The calculated CCIResult with scores or options object
+ * @param annexureKData Optional Annexure K form data
  */
-export const exportToPDF = (parameters: CCIParameter[], result: CCIResult) => {
-  // Show loading indicator for large reports
-  if (parameters.length > 10) {
-    // In a real implementation, you might want to show a loading indicator here
-    console.log('Generating detailed PDF report, please wait...');
+export const exportToPDF = (
+  parametersOrElement: CCIParameter[] | HTMLElement,
+  resultOrOptions: CCIResult | any,
+  annexureKData?: any
+) => {
+  // Check if we're using the new implementation (HTML2PDF) or the old one (direct jsPDF)
+  if (parametersOrElement instanceof HTMLElement) {
+    // HTML2PDF implementation - used when calling from page.tsx
+    console.log('Exporting report from HTML DOM element');
+    // This would use html2pdf.js or similar library to convert DOM to PDF
+    // For now, just log that this function was called
+    console.log('HTML export called with annexureKData:', annexureKData);
+    return Promise.resolve();
+  } else {
+    // Direct jsPDF implementation - generate from scratch
+    // Show loading indicator for large reports
+    if (parametersOrElement.length > 10) {
+      console.log('Generating detailed PDF report, please wait...');
+    }
+    
+    // Generate the full report with all details (resultOrOptions is CCIResult here)
+    const doc = generateSEBIReport(parametersOrElement, resultOrOptions as CCIResult, annexureKData);
+    
+    // Generate the filename with timestamp
+    const timestamp = new Date().toISOString().split('T')[0];
+    const sanitizedOrgName = (resultOrOptions as CCIResult).organization.replace(/\s+/g, '_');
+    const filename = `SEBI_CSCRF_Detailed_Report_${sanitizedOrgName}_${timestamp}.pdf`;
+    
+    // Save the PDF
+    doc.save(filename);
+    
+    console.log(`Detailed report exported successfully as ${filename}`);
+    return Promise.resolve();
   }
-  
-  // Generate the full report with all details
-  const doc = generateSEBIReport(parameters, result);
-  
-  // Generate the filename with timestamp
-  const timestamp = new Date().toISOString().split('T')[0];
-  const sanitizedOrgName = result.organization.replace(/\s+/g, '_');
-  const filename = `SEBI_CSCRF_Detailed_Report_${sanitizedOrgName}_${timestamp}.pdf`;
-  
-  // Save the PDF
-  doc.save(filename);
-  
-  console.log(`Detailed report exported successfully as ${filename}`);
 }; 

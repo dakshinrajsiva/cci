@@ -7,22 +7,26 @@ import CCIResults from '../components/CCIResults';
 import CCIReport from '../components/CCIReport';
 import AnnexureKForm from '../components/AnnexureKForm';
 import { initialCCIParameters, generateSampleData } from './data/cciParameters';
-import { CCIParameter, CCIResult } from './types';
+import { CCIParameter, CCIResult, AnnexureKData } from './types';
 import { calculateCCIIndex } from './utils/cciCalculator';
 import { exportToPDF } from './utils/exportUtils';
 import DataCollectionForm from '../components/DataCollectionForm';
+import { FormState as AnnexureKFormState } from '../components/AnnexureKForm';
+import { toast } from 'react-hot-toast';
 
 export default function Home() {
   const [parameters, setParameters] = useState<CCIParameter[]>(initialCCIParameters);
   const [showResults, setShowResults] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showDataCollection, setShowDataCollection] = useState(false);
-  const [showAnnexureK, setShowAnnexureK] = useState(false);
+  const [showAnnexureK, setShowAnnexureK] = useState<boolean>(false);
   const [organizationName, setOrganizationName] = useState('Your Organization');
   const [expandedParameter, setExpandedParameter] = useState<number | null>(null);
   const [assessmentDate, setAssessmentDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
+  const [annexureKData, setAnnexureKData] = useState<AnnexureKData | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleParameterChange = (paramId: number, field: keyof CCIParameter, value: number | string) => {
     setParameters(prevParams => 
@@ -64,10 +68,13 @@ export default function Home() {
   };
 
   const handleViewReport = () => {
+    // Show the report view and hide other views
     setShowReport(true);
     setShowResults(false);
     setShowDataCollection(false);
-    // Smooth scroll to report
+    setShowAnnexureK(false);
+    
+    // Smooth scroll to report section
     setTimeout(() => {
       const reportElement = document.getElementById('report');
       if (reportElement) {
@@ -78,28 +85,25 @@ export default function Home() {
 
   const handleExportPDF = () => {
     // Show loading indicator while PDF is being generated
-    const exportBtn = document.getElementById('export-pdf-btn');
-    if (exportBtn) {
-      exportBtn.textContent = 'Generating PDF...';
-      exportBtn.classList.add('opacity-70');
-      exportBtn.setAttribute('disabled', 'true');
+    setIsExporting(true);
+    
+    try {
+      // Export the full detailed report with parameters, result and annexureKData
+      exportToPDF(parameters, cciResult, annexureKData || undefined)
+        .then(() => {
+          setIsExporting(false);
+          toast.success('Report exported successfully!');
+        })
+        .catch(error => {
+          console.error('Error exporting PDF:', error);
+          setIsExporting(false);
+          toast.error('Failed to export report');
+        });
+    } catch (error) {
+      console.error('Error starting PDF export:', error);
+      setIsExporting(false);
+      toast.error('Failed to start PDF export');
     }
-
-    // Use setTimeout to allow the UI to update before starting the potentially heavy PDF generation
-    setTimeout(() => {
-      // Export the full detailed report
-      exportToPDF(parameters, cciResult);
-      
-      // Restore button state
-      if (exportBtn) {
-        exportBtn.textContent = 'Export as PDF';
-        exportBtn.classList.remove('opacity-70');
-        exportBtn.removeAttribute('disabled');
-      }
-      
-      // Notify user
-      alert('Detailed report has been exported as PDF. The PDF includes all parameter details and audit information.');
-    }, 100);
   };
 
   const handleLoadSample = () => {
@@ -154,7 +158,8 @@ export default function Home() {
     handleCalculate();
   };
 
-  const handleAnnexureKComplete = () => {
+  const handleAnnexureKComplete = (formData: AnnexureKData) => {
+    setAnnexureKData(formData);
     setShowAnnexureK(false);
     handleViewReport();
   };
@@ -270,7 +275,7 @@ export default function Home() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
             </svg>
-            Annexure-K Form
+            {annexureKData ? 'Edit Annexure K' : 'Add Annexure K'}
           </button>
         </div>
       </div>
@@ -351,7 +356,17 @@ export default function Home() {
         <div id="report" className="mb-8 animate-fadeIn">
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-4">
             <div className="p-6 bg-gray-50 border-b flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-blue-800">CCI Detailed Report</h2>
+              <div>
+                <h2 className="text-xl font-semibold text-blue-800">CCI Detailed Report</h2>
+                {annexureKData && (
+                  <p className="text-sm text-green-600 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Annexure K included
+                  </p>
+                )}
+              </div>
               <button
                 onClick={handleExportPDF}
                 id="export-pdf-btn"
