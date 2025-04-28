@@ -24,9 +24,11 @@ const nextConfig = {
   },
   // Set the base path to match your GitHub repo name if needed
   // For example: basePath: '/cci',
-  basePath: '/cci',
+  // Comment out for local development
+  // basePath: '/cci',
   // Set asset prefix to match your GitHub repo if needed
-  assetPrefix: '/cci',
+  // Comment out for local development
+  // assetPrefix: '/cci',
 }
 
 module.exports = nextConfig

@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { CCIParameter, CCIResult } from '../app/types';
 import { calculateParameterScore } from '../app/utils/cciCalculator';
 import { calculateCCIIndex } from '../app/utils/cciCalculator';
-import { exportToPDF } from '../app/utils/exportUtils';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 interface DataCollectionFormProps {
   parameters: CCIParameter[];
@@ -569,31 +569,8 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
   };
 
   const handleExportPDF = () => {
-    setIsExporting(true);
-
-    // Prompt for organization name
-    const orgName = prompt('Please enter your organization name', 'Your Organization');
-    if (!orgName) {
-      setIsExporting(false);
-      return; // User cancelled
-    }
-
-    // Calculate CCI result
-    const cciResult: CCIResult = {
-      ...calculateCCIIndex(formData),
-      date: new Date().toISOString().split('T')[0],
-      organization: orgName
-    };
-
-    setTimeout(() => {
-      // Export the full detailed report
-      exportToPDF(formData, cciResult);
-      
-      setIsExporting(false);
-      
-      // Notify user
-      alert('Detailed report has been exported as PDF. The PDF includes all parameter details and implementation evidence requirements.');
-    }, 100);
+    // Alert the user that PDF export is no longer available
+    alert('PDF export is no longer available. Please use Word export in the detailed report view.');
   };
 
   // Walkthrough functions
@@ -735,6 +712,14 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
     );
   };
 
+  // Function to get color class based on score
+  const getScoreColorClass = (score: number) => {
+    if (score >= 80) return 'bg-black';
+    if (score >= 60) return 'bg-gray-600';
+    if (score >= 40) return 'bg-gray-400';
+    return 'bg-gray-300';
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden">
       <div className="p-6 bg-black border-b">
@@ -838,7 +823,7 @@ const DataCollectionForm: React.FC<DataCollectionFormProps> = ({
                   </div>
                   <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
                     <div 
-                      className={`h-2.5 rounded-full ${score >= 70 ? 'bg-green-600' : score >= 50 ? 'bg-yellow-500' : 'bg-red-600'}`} 
+                      className={`h-2.5 rounded-full ${getScoreColorClass(score)}`} 
                       style={{ width: `${Math.min(score, 100)}%` }}
                     ></div>
                   </div>

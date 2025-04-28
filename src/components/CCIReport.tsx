@@ -5,24 +5,24 @@ import { calculateParameterScore, calculateWeightedScore } from '../app/utils/cc
 interface CCIReportProps {
   result: CCIResult;
   parameters: CCIParameter[];
-  onExportPDF?: () => void;
+  onExportWord?: () => void;
 }
 
-const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }) => {
+const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportWord }) => {
   // Helper function to get the color for a score
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    if (score >= 40) return 'text-orange-500';
-    return 'text-red-600';
+    if (score >= 80) return 'text-black font-semibold';
+    if (score >= 60) return 'text-gray-800';
+    if (score >= 40) return 'text-gray-700';
+    return 'text-gray-600';
   };
   
   // Helper function to get the background color for a score
   const getScoreBgColor = (score: number) => {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
-    if (score >= 40) return 'bg-orange-100';
-    return 'bg-red-100';
+    if (score >= 80) return 'bg-gray-200';
+    if (score >= 60) return 'bg-gray-100';
+    if (score >= 40) return 'bg-gray-50';
+    return 'bg-white';
   };
   
   // Get maturity level for a specific score
@@ -112,7 +112,9 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
       weightedScore: weightedSum,
       totalWeightage,
       maturityLevel: getMaturityLevelForScore(categoryScore),
-      color: getScoreColor(categoryScore).replace('text-', 'bg-').replace('-600', '-500').replace('-500', '-400')
+      color: categoryScore >= 80 ? 'bg-gray-900' : 
+             categoryScore >= 60 ? 'bg-gray-800' : 
+             categoryScore >= 40 ? 'bg-gray-700' : 'bg-gray-600'
     };
   });
   
@@ -140,7 +142,9 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
       category,
       score,
       maturityLevel: getMaturityLevelForScore(score),
-      color: getScoreColor(score).replace('text-', 'bg-').replace('-600', '-500').replace('-500', '-400')
+      color: score >= 80 ? 'bg-gray-900' : 
+             score >= 60 ? 'bg-gray-800' : 
+             score >= 40 ? 'bg-gray-700' : 'bg-gray-600'
     };
   }).sort((a, b) => {
     const indexA = ['Governance', 'Identify', 'Protect', 'Detect', 'Respond', 'Recover'].indexOf(a.category);
@@ -154,13 +158,13 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
     return date.toLocaleDateString('en-GB');
   };
 
-  // Handle PDF export with fallback
-  const handleExportPDF = () => {
-    if (onExportPDF) {
-      onExportPDF();
+  // Handle Word export with fallback
+  const handleExportWord = () => {
+    if (onExportWord) {
+      onExportWord();
     } else {
-      console.log('Export PDF function not provided');
-      alert('PDF export function not available');
+      console.log('Export Word function not provided');
+      alert('Word export function not available');
     }
   };
 
@@ -170,14 +174,14 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-white">Detailed SEBI CSCRF Compliance Report</h2>
           <button 
-            id="export-pdf-btn"
-            onClick={handleExportPDF}
+            id="export-word-btn"
+            onClick={handleExportWord}
             className="bg-white hover:bg-gray-100 text-black py-2 px-4 rounded-md transition duration-200 flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4V5h12v10z" clipRule="evenodd" />
             </svg>
-            Export as PDF
+            Export as Word
           </button>
         </div>
       </div>
@@ -273,7 +277,7 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.score.toFixed(1)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.maturityLevel}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.color}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.score >= 60 ? 'Low' : 'High'}</td>
                   </tr>
                 </React.Fragment>
               ))}
@@ -293,7 +297,7 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
               <div key={idx} className={`p-4 rounded-lg ${getScoreBgColor(category.score)} border border-gray-200`}>
                 <div className="flex justify-between items-start mb-2">
                   <h4 className="font-medium">{category.category}</h4>
-                  <span className={`px-2 py-1 text-xs rounded-full ${getScoreColor(category.score).replace('text', 'bg')}-100 ${getScoreColor(category.score)}`}>
+                  <span className={`px-2 py-1 text-xs rounded-full bg-gray-200 ${getScoreColor(category.score)}`}>
                     {category.score.toFixed(1)}
                   </span>
                 </div>
@@ -317,7 +321,7 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
           <div key={categoryIndex} className="mb-8">
             <h3 className="text-xl font-semibold mb-4 bg-gray-100 p-3 rounded flex justify-between items-center">
               <span>{category}</span>
-              <span className={`text-sm px-3 py-1 rounded-full ${getScoreColor(categoryScores[categoryIndex].score).replace('text', 'bg')}-100 ${getScoreColor(categoryScores[categoryIndex].score)}`}>
+              <span className={`text-sm px-3 py-1 rounded-full bg-gray-200 ${getScoreColor(categoryScores[categoryIndex].score)}`}>
                 Score: {categoryScores[categoryIndex].score.toFixed(1)} - {categoryScores[categoryIndex].maturityLevel}
               </span>
             </h3>
@@ -409,7 +413,7 @@ const CCIReport: React.FC<CCIReportProps> = ({ result, parameters, onExportPDF }
             <p>This report provides a snapshot of the organization's cyber capability maturity based on the assessment date shown above.</p>
             <p>The CCI is calculated based on the 23 parameters across various domains as specified in the SEBI CSCRF guidelines.</p>
             <p>For areas with lower scores, consider developing action plans to enhance controls and improve overall cyber resilience.</p>
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg text-blue-800 text-sm">
+            <div className="mt-4 p-3 bg-gray-100 rounded-lg text-gray-800 text-sm">
               <p className="font-medium mb-1">Maturity Level Classification:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li><span className="font-medium">Exceptional (91-100):</span> Leading-edge security posture with advanced capabilities</li>

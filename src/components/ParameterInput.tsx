@@ -16,11 +16,11 @@ const ParameterInput: React.FC<ParameterInputProps> = ({ parameter, onChange, ex
     ? (parameter.numerator / parameter.denominator) * 100 
     : 0;
   
-  const scoreColor = score >= 80 
-    ? 'text-green-600' 
+  const scoreStyle = score >= 80 
+    ? 'font-semibold' 
     : score >= 50 
-      ? 'text-yellow-600' 
-      : 'text-red-600';
+      ? 'font-medium' 
+      : 'font-normal';
 
   const handleToggleExpand = (paramId: number) => {
     onToggleExpand(paramId);
@@ -49,18 +49,18 @@ const ParameterInput: React.FC<ParameterInputProps> = ({ parameter, onChange, ex
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center">
-            <span className={`font-medium text-sm ${expanded ? 'text-gray-300' : 'text-gray-700'}`}>
+            <span className={`${scoreStyle} text-sm ${expanded ? 'text-gray-300' : 'text-gray-700'}`}>
               Score: {percentage.toFixed(0)}%
             </span>
             <span
               className={`ml-2 inline-block h-3 w-3 rounded-full ${
                 percentage >= 80
-                  ? 'bg-white'
+                  ? 'bg-black'
                   : percentage >= 60
-                  ? 'bg-gray-300'
+                  ? 'bg-gray-700'
                   : percentage >= 40
                   ? 'bg-gray-400'
-                  : 'bg-gray-500'
+                  : 'bg-gray-300'
               }`}
             ></span>
           </div>

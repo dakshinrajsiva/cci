@@ -9,7 +9,7 @@ import AnnexureKForm from '../components/AnnexureKForm';
 import { initialCCIParameters, generateSampleData } from './data/cciParameters';
 import { CCIParameter, CCIResult, AnnexureKData } from './types';
 import { calculateCCIIndex } from './utils/cciCalculator';
-import { exportToPDF } from './utils/exportUtils';
+import { exportToWord } from './utils/exportUtils';
 import DataCollectionForm from '../components/DataCollectionForm';
 import { FormState as AnnexureKFormState } from '../components/AnnexureKForm';
 import { toast } from 'react-hot-toast';
@@ -83,26 +83,26 @@ export default function Home() {
     }, 100);
   };
 
-  const handleExportPDF = () => {
-    // Show loading indicator while PDF is being generated
+  const handleExportWord = () => {
+    // Show loading indicator while Word document is being generated
     setIsExporting(true);
     
     try {
       // Export the full detailed report with parameters, result and annexureKData
-      exportToPDF(parameters, cciResult, annexureKData || undefined)
+      exportToWord(parameters, cciResult, annexureKData || undefined)
         .then(() => {
           setIsExporting(false);
-          toast.success('Report exported successfully!');
+          toast.success('Word document exported successfully!');
         })
         .catch(error => {
-          console.error('Error exporting PDF:', error);
+          console.error('Error exporting Word document:', error);
           setIsExporting(false);
-          toast.error('Failed to export report');
+          toast.error('Failed to export Word document');
         });
     } catch (error) {
-      console.error('Error starting PDF export:', error);
+      console.error('Error starting Word export:', error);
       setIsExporting(false);
-      toast.error('Failed to start PDF export');
+      toast.error('Failed to start Word export');
     }
   };
 
@@ -286,7 +286,7 @@ export default function Home() {
           </button>
           <button
             onClick={handleShowAnnexureK}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
+            className="bg-gray-800 hover:bg-black text-white py-2 px-6 rounded-md transition duration-200 shadow-md flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
@@ -314,7 +314,7 @@ export default function Home() {
           <div className="p-6">
             {Object.keys(groupedParameters).map((category, categoryIndex) => (
               <div key={categoryIndex} className="mb-8">
-                <h3 className="text-lg font-medium text-white mb-4 pb-2 border-b">
+                <h3 className="text-lg font-medium text-black mb-4 pb-2 border-b">
                   {getCategoryName(category)} Parameters
                 </h3>
                 
@@ -360,7 +360,7 @@ export default function Home() {
       {showResults && (
         <div id="results" className="bg-white rounded-xl shadow-md overflow-hidden mb-8 animate-fadeIn">
           <div className="p-6 bg-gray-50 border-b">
-            <h2 className="text-xl font-semibold text-blue-800">CCI Results</h2>
+            <h2 className="text-xl font-semibold text-black">CCI Results</h2>
           </div>
           <div className="p-6">
             <CCIResults result={cciResult} onViewReport={handleViewReport} onReset={handleReset} onShowAnnexureK={handleShowAnnexureK} />
@@ -373,9 +373,9 @@ export default function Home() {
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-4">
             <div className="p-6 bg-gray-50 border-b">
               <div>
-                <h2 className="text-xl font-semibold text-blue-800">CCI Detailed Report</h2>
+                <h2 className="text-xl font-semibold text-black">CCI Detailed Report</h2>
                 {annexureKData && (
-                  <p className="text-sm text-green-600 mt-1">
+                  <p className="text-sm text-black mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -385,21 +385,34 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <CCIReport parameters={parameters} result={cciResult} />
+          <CCIReport parameters={parameters} result={cciResult} onExportWord={handleExportWord} />
         </div>
       )}
 
+      {/* Bottom Calculate CCI Button */}
+      <div className="flex justify-center mb-12">
+        <button
+          onClick={handleCalculate}
+          className="bg-black hover:bg-gray-800 text-white py-3 px-8 rounded-lg transition duration-200 shadow-lg flex items-center text-lg font-bold"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Calculate CCI Score
+        </button>
+      </div>
+
       {/* Bottom Call-to-Action for Implementation Guide */}
-      <div className="bg-blue-900 text-white p-6 rounded-xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between">
+      <div className="bg-black text-white p-6 rounded-xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between">
         <div className="mb-4 md:mb-0">
           <h2 className="text-xl font-bold">Need guidance for SEBI CSCRF implementation?</h2>
-          <p className="text-blue-200 mt-2">
+          <p className="text-gray-300 mt-2">
             Our comprehensive guide provides detailed requirements and evidence examples for each parameter
           </p>
         </div>
         <a 
           href="https://dakshinrajsiva.github.io/cci/sebi-cscrf" 
-          className="bg-white text-blue-900 hover:bg-blue-100 py-3 px-8 rounded-md transition duration-200 font-bold flex items-center shadow-md"
+          className="bg-white text-black hover:bg-gray-200 py-3 px-8 rounded-md transition duration-200 font-bold flex items-center shadow-md"
           target="_blank"
           rel="noopener noreferrer"
         >
